@@ -1,6 +1,11 @@
 # LBHUD
 HUD指示器
 
+[![Version](https://img.shields.io/cocoapods/v/LBHUD.svg?style=flat)](http://cocoapods.org/pods/LBHUD)
+[![License](https://img.shields.io/cocoapods/l/LBHUD.svg?style=flat)](https://github.com/libcm/LBHUD/blob/master/LICENSE)
+![Xcode 9.0+](https://img.shields.io/badge/Xcode-9.0%2B-blue.svg)
+![iOS 8.0+](https://img.shields.io/badge/iOS-8.0%2B-blue.svg)
+
 提供以下方法:
 
 	/**
@@ -70,3 +75,7 @@ HUD指示器
 	 @param radius 圆角
 	 */
 	- (void)setMessageBackgroundRadius:(CGFloat)radius;
+
+使用:
+	
+	pod 'LBHUD'
