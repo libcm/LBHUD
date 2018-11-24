@@ -17,8 +17,8 @@
 #define HUD_DELAY 2 // 默认时长
 #define HUD_MESSAGE_BACKGROUNDVIEW_WIDTH (HUD_SCREEN_WIDTH - 2 * HUD_MESSAGE_BACKGROUND_MARGIN) // 提示语背景宽度
 #define HUD_MESSAGE_BACKGROUND_COLOR [UIColor colorWithRed:(239/255.0) green:(239/255.0) blue:(244/255.0) alpha:0.99]   // 提示语背景色
-#define HUD_MAIN_COLOR [[UIColor blackColor] colorWithAlphaComponent:0.25]  // HUD背景色
-#define HUD_BACKGROUND_COLOR [[UIColor blackColor] colorWithAlphaComponent:0.45f]   // 菊花背景色
+#define HUD_MAIN_COLOR [[UIColor blackColor] colorWithAlphaComponent:0.85]  // HUD背景色
+#define HUD_BACKGROUND_COLOR [[UIColor blackColor] colorWithAlphaComponent:0.85f]   // 菊花背景色
 #define HUD_MESSAGE_COLOR [UIColor blackColor]  // 提示语颜色
 
 @interface LBHUD()
