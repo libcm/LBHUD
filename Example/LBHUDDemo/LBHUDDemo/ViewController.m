@@ -36,7 +36,7 @@
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     if (indexPath.section) {
         if (indexPath.row == 0) {
-            [LBHUD showWithMessage:@"默认状态,显示2秒"];
+            [LBHUD showWithView:self.view message:@"默认状态,显示2秒"];
         }else if (indexPath.row == 1) {
             [[LBHUD showWithMessage:@"带属性提示语,显示2秒"] setMessageAttributes:@{NSForegroundColorAttributeName: [UIColor cyanColor], NSFontAttributeName: [UIFont systemFontOfSize:20]}];
         }else if (indexPath.row == 2) {

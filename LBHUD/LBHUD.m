@@ -31,20 +31,11 @@
 @implementation LBHUD
 #pragma mark -- Public method --
 + (LBHUD *)show {
-    LBHUD *hud = [[LBHUD alloc] initWithFrame:[UIScreen mainScreen].bounds];
-    UIActivityIndicatorView *indicatorView = [hud activityIndicatorView];
-    indicatorView.center = hud.center;
-    [indicatorView startAnimating];
-    UIView *backgroundView = [hud backgroundView];
-    backgroundView.center = hud.center;
-    [hud addSubview:backgroundView];
-    [hud addSubview:indicatorView];
-    [hud addToWindow];
-    return hud;
+    return [self showWithView:[self Window]];
 }
 
 + (void)hide {
-    UIWindow *window = [UIApplication sharedApplication].windows.lastObject;
+    UIWindow *window = [self Window];
     for (UIView *view in window.subviews) {
         if ([view isKindOfClass:[LBHUD class]]) {
             [view removeFromSuperview];
@@ -53,7 +44,41 @@
     }
 }
 
++ (void)hideWithView:(UIView *)view {
+    for (UIView *v in view.subviews) {
+        if ([v isKindOfClass:[LBHUD class]]) {
+            [v removeFromSuperview];
+            break;
+        }
+    }
+}
+
 + (LBHUD *)showWithMessage:(NSString *)message {
+    return [self showWithView:[self Window] message:message];
+}
+
++ (LBHUD *)showWithAfterDelay:(NSTimeInterval)delay {
+    return [self showWithView:[self Window] afterDelay:delay];
+}
+
++ (LBHUD *)showWithAfterDelay:(NSTimeInterval)delay complete:(void(^)(void))complete {
+    return [self showWithView:[self Window] afterDelay:delay complete:complete];
+}
+
++ (LBHUD *)showWithView:(UIView *)view {
+    LBHUD *hud = [[LBHUD alloc] initWithFrame:[UIScreen mainScreen].bounds];
+    UIActivityIndicatorView *indicatorView = [hud activityIndicatorView];
+    indicatorView.center = hud.center;
+    [indicatorView startAnimating];
+    UIView *backgroundView = [hud backgroundView];
+    backgroundView.center = hud.center;
+    [hud addSubview:backgroundView];
+    [hud addSubview:indicatorView];
+    [view addSubview:hud];
+    return hud;
+}
+
++ (LBHUD *)showWithView:(UIView *)view message:(NSString *)message {
     LBHUD *hud = [[LBHUD alloc] initWithFrame:[UIScreen mainScreen].bounds];
     UILabel *messageLabel = [hud messageLabel];
     messageLabel.text = message;
@@ -61,35 +86,36 @@
     [hud addSubview:backgroundView];
     [hud addSubview:messageLabel];
     [hud setMessageFrame];
-    [hud addToWindow];
+    [view addSubview:hud];
     HUD_WEEK_SELF(ws);
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(HUD_DELAY * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        [ws hide];
+        [ws hideWithView:view];
     });
     return hud;
 }
 
-+ (LBHUD *)showWithAfterDelay:(NSTimeInterval)delay {
-    LBHUD *hud = [self show];
++ (LBHUD *)showWithView:(UIView *)view afterDelay:(NSTimeInterval)delay {
+    LBHUD *hud = [self showWithView:view];
     HUD_WEEK_SELF(ws);
     NSTimeInterval time = delay <= 0 ? HUD_DELAY : delay;
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(time * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        [ws hide];
+        [ws hideWithView:view];
     });
     return hud;
 }
 
-+ (LBHUD *)showWithAfterDelay:(NSTimeInterval)delay complete:(void(^)(void))complete {
-    LBHUD *hud = [self show];
++ (LBHUD *)showWithView:(UIView *)view afterDelay:(NSTimeInterval)delay complete:(void (^)(void))complete {
+    LBHUD *hud = [self showWithView:view];
     HUD_WEEK_SELF(ws);
     NSTimeInterval time = delay <= 0 ? HUD_DELAY : delay;
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(time * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        [ws hide];
+        [ws hideWithView:view];
         complete();
     });
     return hud;
 }
 
+#pragma mark -- Setter --
 - (void)setBackgroundColor:(UIColor *)color {
     self.backgroundView.backgroundColor = color;
 }
@@ -119,6 +145,7 @@
     self.messageBcakgroundView.layer.cornerRadius = radius;
 }
 
+#pragma mark -- Init --
 - (instancetype)initWithFrame:(CGRect)frame {
     if (self = [super initWithFrame:frame]) {
         [self.subviews makeObjectsPerformSelector:@selector(removeFromSuperview)];
@@ -174,8 +201,8 @@
     self.messageLabel.center = self.center;
 }
 
-- (void)addToWindow {
-    [[UIApplication sharedApplication].windows.lastObject addSubview:self];
++ (UIWindow *)Window {
+    return [UIApplication sharedApplication].delegate.window ? [UIApplication sharedApplication].delegate.window : [UIApplication sharedApplication].windows.lastObject;
 }
 
 @end

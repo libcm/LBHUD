@@ -42,6 +42,46 @@
  */
 + (LBHUD *)showWithAfterDelay:(NSTimeInterval)delay complete:(void(^)(void))complete;
 
+
+/**
+ 显示HUD
+
+ @param view superView
+ */
++ (LBHUD *)showWithView:(UIView *)view;
+
+/**
+ 显示提示语  默认显示2秒
+ 
+ @param message 提示语
+ @param view superView
+ */
++ (LBHUD *)showWithView:(UIView *)view message:(NSString *)message;
+
+/**
+ 显示HUD  默认显示2秒
+ 
+ @param delay 显示时长
+ @param view superView
+ */
++ (LBHUD *)showWithView:(UIView *)view afterDelay:(NSTimeInterval)delay;
+
+/**
+ 显示HUD  默认显示2秒
+ 
+ @param delay 显示时长
+ @param complete 隐藏HUD时的回调
+ @param view superView
+ */
++ (LBHUD *)showWithView:(UIView *)view afterDelay:(NSTimeInterval)delay complete:(void(^)(void))complete;
+
+/**
+ 隐藏HUD
+ 
+ @param view superView
+ */
++ (void)hideWithView:(UIView *)view;
+
 /**
  设置HUD背景色, 除showWithMessage:都可用
 
