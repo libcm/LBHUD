@@ -66,7 +66,7 @@
 }
 
 + (LBHUD *)showWithView:(UIView *)view {
-    LBHUD *hud = [[LBHUD alloc] initWithFrame:[UIScreen mainScreen].bounds];
+    LBHUD *hud = [[LBHUD alloc] initWithFrame:view.bounds];
     UIActivityIndicatorView *indicatorView = [hud activityIndicatorView];
     indicatorView.center = hud.center;
     [indicatorView startAnimating];
@@ -74,18 +74,20 @@
     backgroundView.center = hud.center;
     [hud addSubview:backgroundView];
     [hud addSubview:indicatorView];
+    hud.layer.zPosition = FLT_MAX;
     [view addSubview:hud];
     return hud;
 }
 
 + (LBHUD *)showWithView:(UIView *)view message:(NSString *)message {
-    LBHUD *hud = [[LBHUD alloc] initWithFrame:[UIScreen mainScreen].bounds];
+    LBHUD *hud = [[LBHUD alloc] initWithFrame:view.bounds];
     UILabel *messageLabel = [hud messageLabel];
     messageLabel.text = message;
     UIView *backgroundView = [hud messageBcakgroundView];
     [hud addSubview:backgroundView];
     [hud addSubview:messageLabel];
     [hud setMessageFrame];
+    hud.layer.zPosition = FLT_MAX;
     [view addSubview:hud];
     HUD_WEEK_SELF(ws);
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(HUD_DELAY * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
